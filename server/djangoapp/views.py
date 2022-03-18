@@ -8,6 +8,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 # Get an instance of a logger
@@ -40,7 +44,7 @@ def login_request(request):
 
         # Check if authentication successful
         if user is not None:
-            login_request(request, user)
+            login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "djangoapp/login.html", {
@@ -54,7 +58,7 @@ def login_request(request):
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
 
-    logout_request(request)
+    logout(request)
     return HttpResponseRedirect(reverse("index"))
 # ...
 
@@ -80,7 +84,7 @@ def registration_request(request):
             return render(request, "djangoapp/registration.html", {
                 "message": "Username already taken."
             })
-        login_request(request, user)
+        login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "djangoapp/registration.html") 
@@ -100,3 +104,4 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
+

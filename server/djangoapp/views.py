@@ -30,15 +30,60 @@ def contact(request):
     return render(request, 'djangoapp/contact.html', context)
 
 # Create a `login_request` view to handle sign in request
-# def login_request(request):
+def login_request(request):
+    if request.method == "POST":
+
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login_request(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "djangoapp/login.html", {
+                "message": "Invalid username and/or password."
+            })
+    else:
+        return render(request, "djangoapp/login.html")
 # ...
 
+
 # Create a `logout_request` view to handle sign out request
-# def logout_request(request):
+def logout_request(request):
+
+    logout_request(request)
+    return HttpResponseRedirect(reverse("index"))
 # ...
 
 # Create a `registration_request` view to handle sign up request
-# def registration_request(request):
+def registration_request(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+
+        # Ensure password matches confirmation
+        password = request.POST["password"]
+        confirmation = request.POST["confirmation"]
+        if password != confirmation:
+            return render(request, "djangoapp/registration.html", {
+                "message": "Passwords must match."
+            })
+
+        # Attempt to create new user
+        try:
+            user = User.objects.create_user(username, email, password)
+            user.save()
+        except IntegrityError:
+            return render(request, "djangoapp/registration.html", {
+                "message": "Username already taken."
+            })
+        login_request(request, user)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "djangoapp/registration.html") 
 # ...
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
@@ -55,4 +100,3 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-

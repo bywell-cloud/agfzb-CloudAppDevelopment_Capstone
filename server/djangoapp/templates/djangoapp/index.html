@@ -14,13 +14,24 @@
 </head>
 
     <body>
-        y>
+        
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
                 <div class="navbar-header">
                       <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Car</a>
-                      <a  href="{% url 'djangoapp:aboutus' %}">about</a>
-                      <a  href="{% url 'djangoapp:contactus' %}">contact</a>
+                      <a class="navbar-brand"  href="{% url 'djangoapp:aboutus' %}">about</a>
+                      <a class="navbar-brand" href="{% url 'djangoapp:contactus' %}">contact</a>
+                    
+                      {% if user.is_authenticated %}
+                         
+                           <a class="navbar-brand" href="#"><strong>{{ user.username }}</strong></a>
+                           <a class="nav-link" href="{% url 'djangoapp:logout' %}">Log Out</a>
+                      {% else %}
+                             <a class="navbar-brand" href="{% url 'djangoapp:login' %}">Log In</a>
+                    
+                             <a class="nnavbar-brand" href="{% url 'djangoapp:register' %}">Register</a>
+                   
+                      {% endif %}
                 </div>
             </div>
         </nav>

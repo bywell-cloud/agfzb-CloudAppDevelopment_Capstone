@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
@@ -45,7 +46,8 @@ def login_request(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            #return HttpResponseRedirect(reverse("index"))
+            return render(request, "djangoapp/index.html")
         else:
             return render(request, "djangoapp/login.html", {
                 "message": "Invalid username and/or password."
@@ -59,7 +61,8 @@ def login_request(request):
 def logout_request(request):
 
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    #return HttpResponseRedirect(reverse("index"))
+    return render(request, "djangoapp/index.html")
 # ...
 
 # Create a `registration_request` view to handle sign up request
@@ -80,12 +83,13 @@ def registration_request(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
-        except IntegrityError:
+        except:
             return render(request, "djangoapp/registration.html", {
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        #return HttpResponseRedirect(reverse("index"))
+        return render(request, "djangoapp/index.html")
     else:
         return render(request, "djangoapp/registration.html") 
 # ...

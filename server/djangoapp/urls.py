@@ -19,7 +19,7 @@ urlpatterns = [
 
     # path for logout
 
-    path(route='', view=views.get_dealerships, name='index'),
+    path('', view=views.get_dealerships, name='index'),
     path('about', views.about, name='aboutus'),
     path('contact', views.contact, name='contactus'),
     path("login", views.login_request, name="login"),

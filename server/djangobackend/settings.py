@@ -27,8 +27,8 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-#ALLOWED_HOSTS = ["sbwmsg001.eu-gb.cf.appdomain.cloud"]
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["sbwmsg001.eu-gb.cf.appdomain.cloud"]
+#ALLOWED_HOSTS = ["localhost"]
 
 
 

@@ -54,7 +54,7 @@ def dealerships_s(request,state):
     
     state=state
     req= req0.json()
-    context = {'req':req,'state':state}
+    context = {'req':req,'state1':state}
     print(req)
     #return render(request,'apiapp/index.html',{'req':req})
     return render(request, 'djangoapp/api_index_s.html', context)

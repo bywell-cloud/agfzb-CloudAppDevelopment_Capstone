@@ -40,18 +40,21 @@ def contact(request):
 def dealerships(request):
     
     req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
-    context = {'req':req}
+   
     req= req0.json()
+    context = {'req':req}
     print(req)
     #return render(request,'apiapp/index.html',{'req':req})
     return render(request, 'djangoapp/api_index.html', context)
  
 #api_sngle
-def dealerships_s(request,state1):
+def dealerships_s(request,state):
     
     req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
-    context = {'req':req}
+    
+    state=state
     req= req0.json()
+    context = {'req':req,'state':state}
     print(req)
     #return render(request,'apiapp/index.html',{'req':req})
     return render(request, 'djangoapp/api_index_s.html', context)

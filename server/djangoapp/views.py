@@ -102,7 +102,6 @@ def get_dealer_state(request, state):
 
 
 
-
 # Create a `login_request` view to handle sign in request
 def login_request(request):
     if request.method == "POST":

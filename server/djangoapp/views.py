@@ -79,9 +79,14 @@ def get_dealer_details(request, dealer_id):
     context['title'] = 'Dealership Details'
     if request.method == "GET":
         context['dealership'] = get_dealer_by_id(dealer_id)
-       # context['state'] = get_dealer_state(state)
-        context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
         return render(request, 'djangoapp/dealer_details.html', context)
+    
+def get_dealer_reviewdetails(request, dealer_id):
+    context = {}
+    context['title'] = 'Review Details'
+    if request.method == "GET":
+        context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
+        return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
     
 def get_dealer_state(request, state):
     context = {}

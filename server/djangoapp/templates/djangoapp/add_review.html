@@ -2,15 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <title>Dealership Add Review </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
 </head>
+
     <body>
-    <!--Add review form here -->
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                      <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Car</a>
+                      <a class="navbar-brand"  href="{% url 'djangoapp:aboutus' %}">about</a>
+                      <a class="navbar-brand" href="{% url 'djangoapp:contactus' %}">contact</a>
+                    
+                      {% if user.is_authenticated %}
+                         
+                           <a class="navbar-brand" href="#"><strong>{{ user.username }}</strong></a>
+                           <a class="nav-link" href="{% url 'djangoapp:logout' %}">Log Out</a>
+                      {% else %}
+                             <a class="navbar-brand" href="{% url 'djangoapp:login' %}">Log In</a>
+                    
+                             <a class="nnavbar-brand" href="{% url 'djangoapp:register' %}">Sign Up</a>
+                   
+                      {% endif %}
+                </div>
+            </div>
+        </nav>
+        
+        
+    
+        
+        
+         <!--Add review form here -->
+        <div class="container-fluid m-3">
+            <h2>Add a review about {{dealer.full_name}}</h2>
+            <form class="form" action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group col-8">
+                    <label for="content">Enter the review content:</label>
+                    <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+                </div>
+                <div class="form-group col-8 m-3">
+                    <input type="checkbox" class="form-check-input" name="purchase_check" id="purchase_check" checked> Has purchased the car from {{dealer.full_name}}? (select purchased car information below if checked)
+                </div>
+                <div id="car_select" class="form-group col-4">
+                    <label for="car">Select your car (model-make-year):</label>
+                    <select id="car" name="car" class="form-select">
+                        {% for car in cars %}
+                        <option selected value="{{car.id}}">{{car.name}}-{{car.make.name}}-{{car.year|date:"Y"}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="car_purchase_date" class="form-group col-2">
+                    <label for="purchase_date">Select Your Purchase Date:</label>
+                    <input class="date-own form-control" type="text" name="purchase_date" id="purchase_date">
+                </div>
+                <button class="btn btn-primary m-3" type="submit">Submit</button>
+            </form>
+        </div>
+        
+        
+        
+        
     </body>
 </html>

@@ -41,17 +41,36 @@ def contact(request):
 
 
 #api_all
-#def dealerships(request):
- #   
-  #  req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
+def dealerships(request):
+    
+    req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
    
-   # req= req0.json()
-#    context = {'req':req}
- #   print(req)
+    req= req0.json()
+    context = {'req':req}
+    print(req)
  #   return render(request,'apiapp/index.html',{'req':req})
- #   return render(request, 'djangoapp/api_index.html', context)
+    return render(request, 'djangoapp/api_index.html', context)
  
 #api_sngle
+
+  
+def get_dealer_state(request, state):
+    context = {}
+    context['title'] = 'Dealership State'
+    if request.method == "GET":
+        state0=get_dealer_state(state)
+        jsn=state0.json()
+        print(jsn)
+        context={'state':jsn}
+        # context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
+               
+        return render(request, 'djangoapp/dealer_state.html', context)
+    
+
+
+
+
+
 def dealerships_s(request,state):
     
     req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
@@ -87,19 +106,7 @@ def get_dealer_reviewdetails(request, dealer_id):
     if request.method == "GET":
         context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
-    
-def get_dealer_state(request, state):
-    context = {}
-    context['title'] = 'Dealership State'
-    if request.method == "GET":
-        context['state'] = get_dealer_state(state)
-       # context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
-        return render(request, 'djangoapp/dealer_state.html', context)
-    
-
-
-
-
+  
 
 
 # Create a `login_request` view to handle sign in request

@@ -74,17 +74,13 @@ def get_dealers_from_cf(url, **kwargs):
         dealers = json_result["entries"]
         # For each dealer object
         for dealer_entries in dealers:
-            dealer_obj = CarDealer(dealer_entries)
+            #dealer_obj = CarDealer(dealer_entries)
             # Get its content in `doc` object
-            #dealer_doc = dealers["doc"]
+            #dealer_doc = dealers["doc"]id, full_name, short_name, city, address, state, st, zip, lat, long)
             # Create a CarDealer object with values in `doc` object
             
-            
-            
-            #dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-              #                     id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-             #                      short_name=dealer_doc["short_name"],
-             #                      st=dealer_doc["st"], zip=dealer_doc["zip"])
+            dealer_obj = CarDealer(id=dealer_doc["id"], full_name=dealer_doc["full_name"],short_name=dealer_doc["short_name"],city=dealer_doc["city"],address=dealer_doc["address"], state=dealer_doc["state"], st=dealer_doc["st"], zip=dealer_doc["zip"])lat=dealer_doc["lat"], long=dealer_doc["long"])
+                               
             results.append(dealer_obj)
 
     return results

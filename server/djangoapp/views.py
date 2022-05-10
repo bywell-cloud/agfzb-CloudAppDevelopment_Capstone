@@ -41,7 +41,7 @@ def contact(request):
 
 
 #api_all
-def dealerships(request):
+def dealerships2(request):
     
     req0 =requests.get('https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership')
    
@@ -83,6 +83,7 @@ def dealerships_s(request,state):
     return render(request, 'djangoapp/api_index_s.html', context)
 
 def dealerships(request):
+    url='https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership'
     context = {}
     context['title'] = 'Dealership'
     if request.method == "GET":

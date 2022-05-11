@@ -5,31 +5,30 @@ from .models import CarDealer, DealerReview
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
+import logging
 
 url1="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 
+url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
+
 def get_request(url, **kwargs):
-    #printthe kwargs
+    print(kwargs)
     print("GET from {} ".format(url))
-    json_data={}
-    
-    
     try:
-       # Call get method of requests library with URL and parameters
-        response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
+        # Call get method of requests library with URL and parameters
+        response = requests.get(url, headers={'Content-Type': 'application/json'},
+                                    params=kwargs)
+        status_code = response.status_code
+        print("With status {} ".format(status_code))
+        json_data = json.loads(response.text)
+        return json_data
     except:
-        # If  error 
-        
         print("Network exception occurred")
-    status_code = response.status_code
-    print("With status {} ".format(status_code))
-    json_data = json.loads(response.text)
-    return json_data
-    
+        
     
     #try:
      #   if "apikey" in kwargs:
@@ -82,42 +81,71 @@ def post_request(url, payload, **kwargs):
 
   #  return results
 
-def get_dealers_from_cf(**kwargs):
-    results = []
-    # Call get_request with a URL parameter
+def get_dealers_from_cf(url, **kwargs):
+    info = []
+    result = "ok"
+    # - Call get_request() with specified arguments
+    
     json_result = get_request(url)
     if json_result:
-        # Get the row list in JSON as dealers
-        dealers = json_result["entries"]
-        # For each dealer object
-        for dealer_doc in dealers:
-            # Get its content in `doc` object
-            # dealer_doc = dealer["doc"]
+        dealers = json_result['rows']
+        
+        for dealer in dealers:
+            dlr_data = dealer['doc']
+            #print('ADDRESS', dlr_data["address"])
+            if dlr_data.get('id'):
             # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(dealer_doc)
-            results.append(dealer_obj)
+                dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
+                            id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
+                            short_name=dlr_data.get("short_name"), state=dlr_data.get("state"),
+                            st=dlr_data.get("st"), zip=dlr_data.get("zip"))
+            
+            # dealer_obj = CarDealer(address=dealer["doc"]["address"], city=dealer["doc"]["city"], full_name=dealer["doc"]["full_name"],
+            #                     id=dealer["doc"]["id"], lat=dealer["doc"]["lat"], long=dealer["doc"]["long"],
+            #                     short_name=dealer["doc"]["short_name"], 
+            #                     st=dealer["doc"]["st"], state=dealer["doc"]["state"], zip=dealer["doc"]["zip"])
+                info.append(dealer_obj)
+    elif json_result:
+        result = json_result["message"]
+    else:
+        result = "Unknown error"
+    return info, result
 
-    return results
 
 
 
 
-def get_dealers_state(state):
-    results = []
-    # Call get_request with a URL parameter
-    json_result = get_request(url, state=state)
+def get_dealers_state(url,state,**kwargs):
+    info = []
+    result = "ok"
+    # - Call get_request() with specified arguments
+    
+    json_result = get_request(url)
     if json_result:
-        # Get the row list in JSON as dealers
-        dealers = json_result["entries"]
-        # For each dealer object
-        for dealer_doc in dealers:
-            # Get its content in `doc` object
-            # dealer_doc = dealer["doc"]
+        dealers = json_result['rows']
+        
+        for dealer in dealers:
+            dlr_data = dealer['doc']
+            #print('ADDRESS', dlr_data["address"])
+            if dlr_data.get('state')==state:
             # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(dealer_doc)
-            results.append(dealer_obj)
+                dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
+                            id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
+                            short_name=dlr_data.get("short_name"), state=dlr_data.get("state"),
+                            st=dlr_data.get("st"), zip=dlr_data.get("zip"))
+            
+            # dealer_obj = CarDealer(address=dealer["doc"]["address"], city=dealer["doc"]["city"], full_name=dealer["doc"]["full_name"],
+            #                     id=dealer["doc"]["id"], lat=dealer["doc"]["lat"], long=dealer["doc"]["long"],
+            #                     short_name=dealer["doc"]["short_name"], 
+            #                     st=dealer["doc"]["st"], state=dealer["doc"]["state"], zip=dealer["doc"]["zip"])
+                info.append(dealer_obj)
+    elif json_result:
+        result = json_result["message"]
+    else:
+        result = "Unknown error"
+    return info, result
 
-    return results
+
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_by_id(dealer_id):

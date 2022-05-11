@@ -34,13 +34,77 @@
                 </div>
             </div>
         </nav>
-    <!-- Remove this line the first time you edit this file -->
-        {% for req1 in req%}
-       <!-- {% if req1.id == 44.92261 %}
-       
-        {% endif %}-->
-        {{req1}}<br>
-        {% endfor %}
+        <table style="float: right; "  width="100%">
+            <tr>
+                <td><a class="btn-outline-success" href="{% url 'djangoapp:dealerships' %}">[ All States ]</a></td>
+                <td><font color="white">-------------------</fontcolor></td><td></td>
+                <td>
+                    <form name="form1" method ="POST" action = "{% url 'djangoapp:dealerships3' %}" >
+                        {% csrf_token %}
+                            <table>
+                        <tr><td></td><td></td>
+                        <td>
+                       <select name= "state" id="searchtxt1" class="form-control">
+                           <option selected disabled="True">---Select State --- </option>
+                           {% if infoall %}
+                           
+                            
+                           {% for st1 in infoall|dictsort:'state' %}
+                           {% ifchanged %}  
+                           
+                           <option value="{{st1.state}}">{{st1.state}}</option>{% endifchanged %}
+                           
+                           {% endfor %}
+                           {% endif %}
+                         </select>
+                         <td>
+                         <input type = "submit" value = "Search by State">
+                         </td>
+                        </tr>
+                    </table>
+
+                    <!--input type="text" id = "searchtxt1" name="stxt" class="form-control" -->
+
+                    </form>
+               </td>
+                
+            </tr>
+        </table>
+   
+   
+  
+  
+   
+</form>
+        <table class="table" id="table" data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="id">ID</th>
+                    <th data-field="name">Name</th>
+                    <th data-field="city">City</th>
+                    <th data-field="address">Address</th>                
+                    <th data-field="zip">Zip code</th>
+                    <th data-field="state" data-filter-control="select">State</th>
+                </tr>
+            </thead>
+        {% if dealership  %}
+
+        {% for dealer in dealerships %}
+        
+                <tr>
+                    <td>{{dealer.id}}</td>
+                    <td><a href="#">{{val.full_name}}{{dealer.full_name}}</a></td>
+                    <td>{{dealer.city}}</td>
+                    <td>{{dealer.address}}</td>                    
+                    <td>{{dealer.zip}}</td>
+                    <td>{{dealer.st}}</td>
+                </tr>
+            
+        
+            {% endfor %}
+            {% endif %}
+
+       </table>
     
     <!--Add a nav bar here -->
               

@@ -83,16 +83,40 @@ def dealerships_s(request,state):
     return render(request, 'djangoapp/api_index_s.html', context)
 
 def dealerships(request):
-    url='https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership'
-    url1='https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership'
-    context = {}
-    context['title'] = 'Dealership'
+
     if request.method == "GET":
+        context=dict()
+        url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
+        
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf()
-        context['dealerships'] = dealerships
+
+        dealerships, result = get_dealers_from_cf(url)
+        context["dealerships"] = dealerships
+        context["result"] = result
+        
         # Return a list of dealer short name
-        return render(request, 'djangoapp/index.html', context)
+        return render(request, 'djangoapp/api_index.html', context)
+
+
+
+def dealerships3(request):
+
+    if request.method == "POST":
+        state = request.POST["state"]
+
+        context=dict()
+        url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
+        
+        # Get dealers from the URL
+
+        dealerships, result = get_dealers_state(url,state)
+        context["dealerships"] = dealerships
+        context["result"] = result
+        
+        # Return a list of dealer short name
+        return render(request, 'djangoapp/api_index.html', context)
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):

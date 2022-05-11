@@ -91,9 +91,11 @@ def dealerships(request):
         
         # Get dealers from the URL
 
-        dealerships, result = get_dealers_from_cf(url)
-        context["dealerships"] = dealerships
-        context["result"] = result
+        info  = get_dealers_from_cf(url)
+        context["dealerships"] = info
+        context["infoall"] = info
+        #context["result"] = result
+        #context["infoall"] = infoall
         
         # Return a list of dealer short name
         return render(request, 'djangoapp/api_index.html', context)
@@ -111,12 +113,14 @@ def dealerships3(request):
         
         # Get dealers from the URL
 
-        dealerships, result = get_dealers_state(url,state)
-        context["dealerships"] = dealerships
-        context["result"] = result
+        infoall , info = get_dealers_state(url,state)
+        context["infoall"] = infoall
+        context["dealerships"] = info
+        messages.info(request , "State Not found!!! "  )
         
         # Return a list of dealer short name
         return render(request, 'djangoapp/api_index.html', context)
+
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):

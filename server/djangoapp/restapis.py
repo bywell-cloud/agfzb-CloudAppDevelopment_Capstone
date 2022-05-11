@@ -91,14 +91,14 @@ def get_dealers_from_cf(url, **kwargs):
         dealers = json_result['rows']
         
         for dealer in dealers:
-            dlr_data = dealer['doc']
-            #print('ADDRESS', dlr_data["address"])
-            if dlr_data.get('id'):
+            deal_data = dealer['doc']
+            #print('ADDRESS', deal_data["address"])
+            if deal_data.get('id'):
             # Create a CarDealer object with values in `doc` object
-                dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
-                            id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
-                            short_name=dlr_data.get("short_name"), state=dlr_data.get("state"),
-                            st=dlr_data.get("st"), zip=dlr_data.get("zip"))
+                dealer_obj = CarDealer(address=deal_data.get("address"), city=deal_data.get("city"), full_name=deal_data.get("full_name"),
+                            id=deal_data.get("id"), lat=deal_data.get("lat"), long=deal_data.get("long"),
+                            short_name=deal_data.get("short_name"), state=deal_data.get("state"),
+                            st=deal_data.get("st"), zip=deal_data.get("zip"))
             
             # dealer_obj = CarDealer(address=dealer["doc"]["address"], city=dealer["doc"]["city"], full_name=dealer["doc"]["full_name"],
             #                     id=dealer["doc"]["id"], lat=dealer["doc"]["lat"], long=dealer["doc"]["long"],

@@ -109,7 +109,7 @@ def get_dealers_from_cf(url, **kwargs):
         result = json_result["message"]
     else:
         result = "Unknown error"
-    return info, result
+    return info
 
 
 
@@ -117,6 +117,7 @@ def get_dealers_from_cf(url, **kwargs):
 
 def get_dealers_state(url,state,**kwargs):
     info = []
+    infoall=[]
     result = "ok"
     # - Call get_request() with specified arguments
     
@@ -127,7 +128,16 @@ def get_dealers_state(url,state,**kwargs):
         for dealer in dealers:
             dlr_data = dealer['doc']
             #print('ADDRESS', dlr_data["address"])
-            if dlr_data.get('state')==state:
+
+            if dlr_data.get('id'):
+            # Create a CarDealer object with values in `doc` object
+                dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
+                            id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
+                            short_name=dlr_data.get("short_name"), state=dlr_data.get("state"),
+                            st=dlr_data.get("st"), zip=dlr_data.get("zip"))
+                infoall.append(dealer_obj)            
+
+            if dlr_data.get('state') == state:
             # Create a CarDealer object with values in `doc` object
                 dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
                             id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
@@ -143,7 +153,7 @@ def get_dealers_state(url,state,**kwargs):
         result = json_result["message"]
     else:
         result = "Unknown error"
-    return info, result
+    return infoall , info
 
 
 

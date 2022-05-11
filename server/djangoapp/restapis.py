@@ -6,7 +6,7 @@ from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 
-
+url1="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -64,28 +64,40 @@ def post_request(url, payload, **kwargs):
 #  get_dealers_from_cf(url, **kwargs):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a CarDealer object list
-def get_dealers_from_cf(url, **kwargs):
+
+#def get_dealers_from_cf(url1):
+ #   results = []
+    # Call get_request with a URL parameter
+#    json_result = get_request(url1)
+    #printthe json_result
+ #   if json_result:
+        # Get the row list in JSON as dealers
+#        dealers = json_result["entries"]
+        # For each dealer object
+ #       for dealer_doc in dealers:
+  #         id=dealer_doc['id']
+#            dealer_obj = CarDealer( city=dealer_doc["city"],address=dealer_doc["address"], state=dealer_doc["state"], st=dealer_doc["st"], zip=dealer_doc["zip"],lat=dealer_doc["lat"], long=dealer_doc["long"])
+                               
+ #           results.append(dealer_obj)
+
+  #  return results
+
+def get_dealers_from_cf(**kwargs):
     results = []
     # Call get_request with a URL parameter
     json_result = get_request(url)
-    #printthe json_result
     if json_result:
         # Get the row list in JSON as dealers
         dealers = json_result["entries"]
         # For each dealer object
-        for dealer_entries in dealers:
-            #dealer_obj = CarDealer(dealer_entries)
+        for dealer_doc in dealers:
             # Get its content in `doc` object
-            #dealer_doc = dealers["doc"]id, full_name, short_name, city, address, state, st, zip, lat, long)
+            # dealer_doc = dealer["doc"]
             # Create a CarDealer object with values in `doc` object
-            
-            dealer_obj = CarDealer(id=dealer_doc["id"], full_name=dealer_doc["full_name"],short_name=dealer_doc["short_name"],city=dealer_doc["city"],address=dealer_doc["address"], state=dealer_doc["state"], st=dealer_doc["st"], zip=dealer_doc["zip"])lat=dealer_doc["lat"], long=dealer_doc["long"])
-                               
+            dealer_obj = CarDealer(dealer_doc)
             results.append(dealer_obj)
 
     return results
-#Coding practice: create a get_dealer_by_id or get_dealers_by_state method in restapis.py. HINT, the only difference from the get_dealers_from_cf method is adding a dealer id or state URL parameter argument when calling the def get_request(url, **kwargs): method such as get_request(url, dealerId=dealerId).
-
 
 
 

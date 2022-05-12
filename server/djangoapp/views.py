@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_by_id, get_dealers_state, get_dealer_reviews_from_cf, post_request   # from .restapis import related methods
+from .restapis import get_dealers_from_cf, get_dealer_by_id, get_dealers_state, get_dealer_reviews, post_request   # from .restapis import related methods
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -23,6 +23,10 @@ logger = logging.getLogger(__name__)
 url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 apikey="https://apikey-v2-15fij93at4ftr36fwwdfuh4po5vcrv58md8rf718308g:7a1405f456fc3a0acca4a0ea939068f7@4ff16b13-4a3a-4608-a787-cbe81ec8dfae-bluemix.cloudantnosqldb.appdomain.cloud"
 reviewz='https://2e35c4b8.eu-gb.apigw.appdomain.cloud/api/review'
+addreview_url =	"https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/addreview"	
+ 
+review_url = "https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/review"	
+ 
 
 # Create your views here.
 
@@ -109,8 +113,6 @@ def dealerships3(request):
 
         context=dict()
         url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
-        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
-        
         # Get dealers from the URL
 
         infoall , info = get_dealers_state(url,state)
@@ -134,7 +136,7 @@ def get_dealer_reviewdetails(request, dealer_id):
     context = {}
     context['title'] = 'Review Details'
     if request.method == "GET":
-        context['reviews'] = get_dealer_reviews_from_cf(dealer_id)
+        context['reviews'] = get_dealer_reviews(review_url,dealer_id)
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
   
 

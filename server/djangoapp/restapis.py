@@ -169,7 +169,7 @@ def get_dealer_reviews(review_url, dealer_id):
         
         for dealer in dealers:
             dealer_data = dealer['doc']
-            #print('ADDRESS', dlr_data["address"])
+            
 
             if dealer_data.get('id'):
                 
@@ -195,19 +195,7 @@ def get_dealer_reviews(review_url, dealer_id):
                 id=dealer_data['id']
                 )
                 
-                
-               # review_obj = DealerReview(
-                #dealership=review["dealership"],
-               # name=review["name"],
-               # purchase=review["purchase"],
-               # review=review["review"],
-               # purchase_date=review["purchase_date"],
-               # car_make=review["car_make"],
-               # car_model=review["car_model"],
-               # car_year=review["car_year"],
-               # sentiment=analyze_review_sentiments(review["review"]),
-               # id=review['id']
-               # )
+               
             results.append(review_obj)
     #print(results[0])
     return results

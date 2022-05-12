@@ -63,7 +63,7 @@
                         </tr>
                     </table>
 
-                    <!--input type="text" id = "searchtxt1" name="stxt" class="form-control" -->
+                  
 
                     </form>
                </td>
@@ -93,7 +93,7 @@
         
                 <tr>
                     <td>{{dealer.id}}</td>
-                    <td><a href="#">{{val.full_name}}{{dealer.full_name}}</a></td>
+                    <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{val.full_name}}{{dealer.full_name}}</a></td>
                     <td>{{dealer.city}}</td>
                     <td>{{dealer.address}}</td>                    
                     <td>{{dealer.zip}}</td>

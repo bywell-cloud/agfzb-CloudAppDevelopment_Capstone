@@ -10,6 +10,9 @@ import logging
 url1="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 
 url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+addreview_url =	"https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/addreview"	
+ 
+review_url = "https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/review"	
 
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
@@ -64,23 +67,6 @@ def post_request(url, payload, **kwargs):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a CarDealer object list
 
-#def get_dealers_from_cf(url1):
- #   results = []
-    # Call get_request with a URL parameter
-#    json_result = get_request(url1)
-    #printthe json_result
- #   if json_result:
-        # Get the row list in JSON as dealers
-#        dealers = json_result["entries"]
-        # For each dealer object
- #       for dealer_doc in dealers:
-  #         id=dealer_doc['id']
-#            dealer_obj = CarDealer( city=dealer_doc["city"],address=dealer_doc["address"], state=dealer_doc["state"], st=dealer_doc["st"], zip=dealer_doc["zip"],lat=dealer_doc["lat"], long=dealer_doc["long"])
-                               
- #           results.append(dealer_obj)
-
-  #  return results
-
 def get_dealers_from_cf(url, **kwargs):
     info = []
     result = "ok"
@@ -126,15 +112,15 @@ def get_dealers_state(url,state,**kwargs):
         dealers = json_result['rows']
         
         for dealer in dealers:
-            dlr_data = dealer['doc']
+            dealer_data = dealer['doc']
             #print('ADDRESS', dlr_data["address"])
 
-            if dlr_data.get('id'):
+            if dealer_data.get('id'):
             # Create a CarDealer object with values in `doc` object
-                dealer_obj = CarDealer(address=dlr_data.get("address"), city=dlr_data.get("city"), full_name=dlr_data.get("full_name"),
-                            id=dlr_data.get("id"), lat=dlr_data.get("lat"), long=dlr_data.get("long"),
-                            short_name=dlr_data.get("short_name"), state=dlr_data.get("state"),
-                            st=dlr_data.get("st"), zip=dlr_data.get("zip"))
+                dealer_obj = CarDealer(address=dealer_data.get("address"), city=dealer_data.get("city"), full_name=dealer_data.get("full_name"),
+                            id=dealer_data.get("id"), lat=dealer_data.get("lat"), long=dealer_data.get("long"),
+                            short_name=dlr_data.get("short_name"), state=dealer_data.get("state"),
+                            st=dealer_data.get("st"), zip=dealer_data.get("zip"))
                 infoall.append(dealer_obj)            
 
             if dlr_data.get('state') == state:
@@ -173,27 +159,55 @@ def get_dealer_by_id(dealer_id):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
-def get_dealer_reviews_from_cf(url, dealer_id):
+
+def get_dealer_reviews(review_url, dealer_id):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url, dealerId=dealer_id)
-    
-    if "entries" in json_result:
-        reviews = json_result["entries"]
+    json_result = get_request(review_url, dealerId=dealer_id)
+    if json_result:
+        dealers = json_result['rows']
+        
+        for dealer in dealers:
+            dealer_data = dealer['doc']
+            #print('ADDRESS', dlr_data["address"])
+
+            if dealer_data.get('id'):
+                
+                
+    if "rows" in json_result:
+        
+        reviews = json_result["rows"]
         # For each review object
         for review in reviews:
-            review_obj = DealerReview(
-                dealership=review["dealership"],
-                name=review["name"],
-                purchase=review["purchase"],
-                review=review["review"],
-                purchase_date=review["purchase_date"],
-                car_make=review["car_make"],
-                car_model=review["car_model"],
-                car_year=review["car_year"],
-                sentiment=analyze_review_sentiments(review["review"]),
-                id=review['id']
+            dealer_data = review['doc']
+         
+            if dealer_data.get('id'):
+                review_obj = DealerReview(
+                dealership=dealer_data["dealership"],
+                name=dealer_data["name"],
+                purchase=dealer_data["purchase"],
+                review=dealer_data["review"],
+                purchase_date=dealer_data["purchase_date"],
+                car_make=dealer_data["car_make"],
+                car_model=dealer_data["car_model"],
+                car_year=dealer_data["car_year"],
+                sentiment=analyze_review_sentiments(dealer_data["review"]),
+                id=dealer_data['id']
                 )
+                
+                
+               # review_obj = DealerReview(
+                #dealership=review["dealership"],
+               # name=review["name"],
+               # purchase=review["purchase"],
+               # review=review["review"],
+               # purchase_date=review["purchase_date"],
+               # car_make=review["car_make"],
+               # car_model=review["car_model"],
+               # car_year=review["car_year"],
+               # sentiment=analyze_review_sentiments(review["review"]),
+               # id=review['id']
+               # )
             results.append(review_obj)
     #print(results[0])
     return results

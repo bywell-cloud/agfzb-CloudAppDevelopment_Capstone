@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/state', views.dealerships3, name='dealerships3'),
     path('api/dealership?state=<str:state>', views.get_dealer_state, name='get_dealer_state'),
     path('api/dealership/<int:dealer_id>', views.get_dealer_details, name='get_dealer_details'),
-    path('api/review/<int:dealer_id>', views.get_dealer_reviewdetails, name='get_dealer_reviewdetails'),
+    path('api/review/<int:dealer_id>', views.get_dealer_reviews, name='dealer_details'),
     path('api/addreview/<int:dealer_id>/', views.add_review, name='add_review'),
 
 

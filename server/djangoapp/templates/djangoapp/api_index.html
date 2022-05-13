@@ -63,7 +63,7 @@
                         </tr>
                     </table>
 
-                  
+                    <!--input type="text" id = "searchtxt1" name="stxt" class="form-control" -->
 
                     </form>
                </td>
@@ -87,10 +87,8 @@
                     <th data-field="state" data-filter-control="select">State</th>
                 </tr>
             </thead>
-        {% if dealership  %}
-
+            
         {% for dealer in dealerships %}
-        
                 <tr>
                     <td>{{dealer.id}}</td>
                     <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{val.full_name}}{{dealer.full_name}}</a></td>
@@ -102,8 +100,6 @@
             
         
             {% endfor %}
-            {% endif %}
-
        </table>
     
     <!--Add a nav bar here -->

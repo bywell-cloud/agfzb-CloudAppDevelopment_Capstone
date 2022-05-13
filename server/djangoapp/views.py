@@ -126,17 +126,18 @@ def dealerships3(request):
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
-    context = {}
-    context['title'] = 'Dealership Details'
+    #context = {}
     if request.method == "GET":
+        context['title'] = 'Dealership Details'
         context['dealership'] = get_dealer_by_id(dealer_id)
         return render(request, 'djangoapp/dealer_details.html', context)
     
 def dealer_details(request, dealer_id):
-    context = {}
+    context=dict()
+    #context = {}
     context['title'] = 'Review Details'
     if request.method == "GET":
-        context['reviews'] = get_dealer_reviews(review_url,dealer_id)
+        context['reviews'] = get_dealer_reviews(dealer_id)
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
   
 

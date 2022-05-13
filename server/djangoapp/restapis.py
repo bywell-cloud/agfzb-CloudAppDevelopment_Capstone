@@ -160,43 +160,22 @@ def get_dealer_by_id(dealer_id):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 
-def get_dealer_reviews(review_url, dealer_id):
+def get_dealer_reviews(dealer_id , **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(review_url, dealerId=dealer_id)
+    json_result = get_request(review_url)
+   
     if json_result:
-        dealers = json_result['rows']
-        
-        for dealer in dealers:
-            dealer_data = dealer['doc']
-            
-
-            if dealer_data.get('id'):
-                
-                
-    if "rows" in json_result:
-        
         reviews = json_result["rows"]
         # For each review object
         for review in reviews:
-            dealer_data = review['doc']
+            dealer_data = review['rows']
          
-            if dealer_data.get('id'):
-                review_obj = DealerReview(
-                dealership=dealer_data["dealership"],
-                name=dealer_data["name"],
-                purchase=dealer_data["purchase"],
-                review=dealer_data["review"],
-                purchase_date=dealer_data["purchase_date"],
-                car_make=dealer_data["car_make"],
-                car_model=dealer_data["car_model"],
-                car_year=dealer_data["car_year"],
-                sentiment=analyze_review_sentiments(dealer_data["review"]),
-                id=dealer_data['id']
-                )
+            if dealer_data['id']:
+                review_obj = DealerReview(id=dealer_data['id'],name=dealer_data["name"],purchase=dealer_data["purchase"],review=dealer_data["review"] ,purchase_date=dealer_data["purchase_date"],car_make=dealer_data["car_make"],car_model=dealer_data["car_model"],car_year=dealer_data["car_year"]) 
+              # sentiment=analyze_review_sentiments(dealer_data["review"]),dealership=dealer_data["dealership"]
                 
-               
-            results.append(review_obj)
+                results.append(review_obj)
     #print(results[0])
     return results
 

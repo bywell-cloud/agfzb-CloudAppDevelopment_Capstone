@@ -156,7 +156,7 @@ def login_request(request):
             login(request, user)
             #return HttpResponseRedirect(reverse("index"))
             return render(request, "djangoapp/index.html")
-        else:
+        else: 
             return render(request, "djangoapp/login.html", {
                 "message": "Invalid username and/or password."
             })

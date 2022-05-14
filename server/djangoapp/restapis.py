@@ -163,16 +163,20 @@ def get_dealer_by_id(dealer_id):
 def get_dealer_reviews(dealer_id , **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(review_url,id=dealer_id)
+    json_result = get_request(review_url)
    
     if json_result:
-        reviews = json_result["rows"]
+        reviews = json_result["reviews"]
         # For each review object
-        for review in reviews:
-            dealer_data = review['doc']
+       # for review in reviews:
+        #    dealer_data = review["reviews"]
+             #reviews = json_result["body"]["data"]
+        # For each review object
+        for dealer_data in reviews:
+            if (dealer_id == review.get("dealership")):
          
-            if dealer_data['id']:
-                review_obj = DealerReview(id=dealer_data['id'],name=dealer_data["name"],purchase=dealer_data["purchase"],review=dealer_data["review"] ,purchase_date=dealer_data["purchase_date"],car_make=dealer_data["car_make"],car_model=dealer_data["car_model"],car_year=dealer_data["car_year"]) 
+            #if dealer_data.get('id') :
+                review_obj = DealerReview(id=dealer_data.get("id"),name=dealer_data.get("name"),purchase=dealer_data.get("purchase"),review=dealer_data.get("review") ,purchase_date=dealer_data.get("purchase_date"),car_make=dealer_data.get("car_make"),car_model=dealer_data.get("car_model"),car_year=dealer_data.get("car_year")) 
               # sentiment=analyze_review_sentiments(dealer_data["review"]),dealership=dealer_data["dealership"]
                 
                 results.append(review_obj)

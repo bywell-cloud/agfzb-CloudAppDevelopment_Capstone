@@ -163,13 +163,13 @@ def get_dealer_by_id(dealer_id):
 def get_dealer_reviews(dealer_id , **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(review_url)
+    json_result = get_request(review_url,id=dealer_id)
    
     if json_result:
         reviews = json_result["rows"]
         # For each review object
         for review in reviews:
-            dealer_data = review['rows']
+            dealer_data = review['doc']
          
             if dealer_data['id']:
                 review_obj = DealerReview(id=dealer_data['id'],name=dealer_data["name"],purchase=dealer_data["purchase"],review=dealer_data["review"] ,purchase_date=dealer_data["purchase_date"],car_make=dealer_data["car_make"],car_model=dealer_data["car_model"],car_year=dealer_data["car_year"]) 

@@ -39,7 +39,7 @@
                 <td><a class="btn-outline-success" href="{% url 'djangoapp:dealerships' %}">[ All States ]</a></td>
                 <td><font color="white">-------------------</fontcolor></td><td></td>
                 <td>
-                    <form name="form1" method ="POST" action = "{% url 'djangoapp:dealerships3' %}" >
+                   <!--- <form name="form1" method ="POST" action = "{% url 'djangoapp:dealerships3' %}" >
                         {% csrf_token %}
                             <table>
                         <tr><td></td><td></td>
@@ -58,14 +58,15 @@
                            {% endif %}
                          </select>
                          <td>
-                         <input type = "submit" value = "Search by State">
+                         <input type = "submit" value = "Search by State"></form>-->
                          </td>
                         </tr>
+
                     </table>
 
                     <!--input type="text" id = "searchtxt1" name="stxt" class="form-control" -->
 
-                    </form>
+                    
                </td>
                 
             </tr>

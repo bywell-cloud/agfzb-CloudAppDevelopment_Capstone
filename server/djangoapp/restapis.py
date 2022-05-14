@@ -166,7 +166,7 @@ def get_dealer_reviews(dealer_id , **kwargs):
     json_result = get_request(review_url)
    
     if json_result:
-        reviews = json_result["reviews"]
+        reviews = json_result["reviews"] 
         # For each review object
        # for review in reviews:
         #    dealer_data = review["reviews"]

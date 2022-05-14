@@ -137,6 +137,7 @@ def dealer_details(request, dealer_id):
     #context = {}
     context['title'] = 'Review Details'
     if request.method == "GET":
+        context['dealerid'] = dealer_id
         context['reviews'] = get_dealer_reviews(dealer_id)
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
   

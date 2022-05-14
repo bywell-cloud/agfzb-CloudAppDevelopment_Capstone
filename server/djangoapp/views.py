@@ -227,9 +227,9 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
     if request.method == "GET":
-        context = {}
+        context=dict()
         context['dealer_id'] = dealer_id
-        context['username'] = request.user.first_name + " " + request.user.last_name
+        context['username'] = request.user.username 
         context['cars'] = CarModel.objects.all()
 
         return render(request, 'djangoapp/add_review.html', context)

@@ -142,7 +142,6 @@ def dealer_details(request, dealer_id):
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
   
 
-
 # Create a `login_request` view to handle sign in request
 def login_request(request):
     if request.method == "POST":

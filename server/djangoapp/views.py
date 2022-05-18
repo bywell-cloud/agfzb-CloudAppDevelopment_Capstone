@@ -1,4 +1,4 @@
-
+from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -16,6 +16,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
+import os
+
+carmake_list = [('', '(all)')]
+carmodel_list = [('', '(all)')]
+try:
+    carmake_list.extend([(i[0],i[0])
+        for i in CarMake.objects.values_list('name')])
+    carmodel_list.extend([(i[0], i[0])
+        for i in CarModel.objects.values_list('name')])
+except OperationalError:
+    pass
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -255,9 +266,28 @@ def add_review(request, dealer_id):
 
         if request.user and request.user.is_authenticated:
             json_payload = { "review": review }
-            
-            post_request(addreview_url, json_payload, dealership=dealer_id)
-            return redirect("djangoapp:dealer_details", dealer_id)
-        else:
-            return redirect("djangoapp:dealer_details", dealer_id)
+ #Content type must be included in the header
+            header = {"content-type": "application/json"}
+    #Performs a POST on the specified url 
+            response= requests.post(addreview_url,data=json.dumps(json_payload), headers=header, verify=False)
+            rst_json=response.json()
 
+    #parse the json to get the service ticket
+            result = rst_json["response"]["Result"]
+
+            return result 
+            
+           # result, status_code = post_request(addreview_url, json_payload, dealer_id=dealer_id)
+            print(result)
+            if (result.get('message') == "ok"):
+
+                return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            else:
+                context=dict()
+                context["error"] = result["message"]
+                return render(request, 'djangoapp/add_review.html', context)
+            
+        else:
+            pass
+            #return redirect("djangoapp:dealer_details", dealer_id)
+            

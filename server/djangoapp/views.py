@@ -18,15 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import os
 
-carmake_list = [('', '(all)')]
-carmodel_list = [('', '(all)')]
-try:
-    carmake_list.extend([(i[0],i[0])
-        for i in CarMake.objects.values_list('name')])
-    carmodel_list.extend([(i[0], i[0])
-        for i in CarModel.objects.values_list('name')])
-except OperationalError:
-    pass
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)

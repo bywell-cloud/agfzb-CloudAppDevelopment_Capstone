@@ -243,9 +243,9 @@ def add_review(request, dealer_id):
         review['dealership'] = dealer_id
         review['review'] = request.POST.get('content')
         review['name'] = request.POST.get('username')
-        review['purchase_date'] = request.POST.get('purchase_date')
+        review['purchase_date'] = str(request.POST.get('purchase_date'))
         review['car_model'] = car.name
-        review['car_year'] = car.year
+        review['car_year'] = str(car.year)
         review['car_make'] = car.carmake
 
         if purchase == 'on':

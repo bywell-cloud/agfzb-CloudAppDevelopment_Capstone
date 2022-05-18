@@ -75,7 +75,6 @@ def post_request(addreview_url, json_payload, **kwargs):
    # print("Status Code ", {response.status_code})
  #   data = json.loads(response.text)
  #   return data
-
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 #  get_dealers_from_cf(url, **kwargs):
 # - Call get_request() with specified arguments

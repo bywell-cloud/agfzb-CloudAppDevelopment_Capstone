@@ -46,6 +46,11 @@
     <div class="d-inline float-right"><button class="btn btn-primary"
         onclick="window.location.href = `{% url 'djangoapp:add_review' dealerid %}`">Add review</button>
     </div>
+    {% else %}
+    <div class="d-inline float-center">
+
+           {{msg}}
+    </div>
     {% endif %}
   </div>
   <ul class="list-group list-group-flush">

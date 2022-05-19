@@ -142,6 +142,7 @@ def dealer_details(request, dealer_id):
     if request.method == "GET":
         context['dealerid'] = dealer_id
         context['reviews'] = get_dealer_reviews(dealer_id)
+        context['msg'] = "Sorry You have to be logged in to add review"
         return render(request, 'djangoapp/dealer_reviewdetails.html', context)    
   
 
@@ -157,8 +158,17 @@ def login_request(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            context=dict()
+            url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
+        
+        # Get dealers from the URL
+
+            info  = get_dealers_from_cf(url)
+            context["dealerships"] = info
+            context["infoall"] = info
             #return HttpResponseRedirect(reverse("index"))
-            return render(request, "djangoapp/index.html")
+            return render(request, "djangoapp/index.html" ,context)
         else: 
             return render(request, "djangoapp/login.html", {
                 "message": "Invalid username and/or password."
@@ -171,9 +181,19 @@ def login_request(request):
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
 
-    logout(request)
+    logout(request) 
+    context=dict()
+    url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
+        
+        # Get dealers from the URL
+
+    info  = get_dealers_from_cf(url)
+    context["dealerships"] = info
+    context["infoall"] = info
+    
     #return HttpResponseRedirect(reverse("index"))
-    return render(request, "djangoapp/index.html")
+    return render(request, "djangoapp/index.html" , context)
 # ...
 
 # Create a `registration_request` view to handle sign up request
@@ -207,8 +227,18 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
-    context = {}
+    
     if request.method == "GET":
+        context=dict()
+        url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
+        #url = "https://6b6023fb.us-south.apigw.appdomain.cloud/api/dealership"
+        
+        # Get dealers from the URL
+
+        info  = get_dealers_from_cf(url)
+        context["dealerships"] = info
+        context["infoall"] = info
+        
         return render(request, 'djangoapp/index.html', context)
 
 

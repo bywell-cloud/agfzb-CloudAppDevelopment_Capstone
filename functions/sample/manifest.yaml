@@ -1,6 +1,6 @@
 packages:
   # this is the package name
-  dealership2-package:
+  dealership2r-package:
     version: 1.0
     license: Apache-2.0
     inputs:
@@ -14,17 +14,17 @@ packages:
         type: string
         value: $CLOUDANT_USERNAME  
     actions:
-      apidealership:
+      apidealershipr:
         # source for the action; in this case it is a folder
         function: python/main.py
         runtime: Python:3.9
         # publish the action as a web action
         web: yes
     apis:
-      dealership2-api:
+      dealership2r-api:
         api:
-          apidealership:
-            apidealership:
+          apidealershipr:
+            apidealershipr:
               method: GET
 
 

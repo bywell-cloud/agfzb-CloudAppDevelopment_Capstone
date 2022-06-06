@@ -1,0 +1,30 @@
+packages:
+  # this is the package name
+  dealership2-package:
+    version: 1.0
+    license: Apache-2.0
+    inputs:
+      CLOUDANT_URL:
+        type: string
+        value: $CLOUDANT_URL
+      CLOUDANT_APIKEY:
+        type: string
+        value: $CLOUDANT_APIKEY
+      CLOUDANT_APIKEY:
+        type: string
+        value: $CLOUDANT_USERNAME  
+    actions:
+      apidealership:
+        # source for the action; in this case it is a folder
+        function: python/main.py
+        runtime: Python:3.9
+        # publish the action as a web action
+        web: yes
+    apis:
+      dealership2-api:
+        api:
+          apidealership:
+            apidealership:
+              method: GET
+
+

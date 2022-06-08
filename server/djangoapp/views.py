@@ -17,8 +17,18 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
+import requests
+import sys
+from ibmcloudant.cloudant_v1 import CloudantV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
+authenticator = IAMAuthenticator("KSJsfNXg4_mYa7TailJYPjAIt4BDHty_egXILz9Vn75M")
+service = CloudantV1(authenticator=authenticator)
+service.set_service_url("https://apikey-v2-15fij93at4ftr36fwwdfuh4po5vcrv58md8rf718308g:7a1405f456fc3a0acca4a0ea939068f7@4ff16b13-4a3a-4608-a787-cbe81ec8dfae-bluemix.cloudantnosqldb.appdomain.cloud")
+    
+
+    
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -260,6 +270,7 @@ def get_dealerships(request):
 def add_review(request, dealer_id):
     addreview_url =	"https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/addreview"
     if request.method == "GET":
+        
         context=dict()
         context['dealer_id'] = dealer_id
         context['username'] = request.user.username 
@@ -288,6 +299,16 @@ def add_review(request, dealer_id):
 
         if request.user and request.user.is_authenticated:
             json_payload = { "review": review }
+        products_doc = {
+        "car_make": "Bmw","car_model": "suden",
+        "car_year": 2000,"dealership": 13,
+        "id":210,"name": "Richardy","purchase": 'true',
+        "purchase_date": "09/17/2020","review": "testing12"
+        }    
+        response = service.post_document(db='reviews', document=products_doc).get_result()
+        if response:
+        response = service.post_all_docs(db='reviews', include_docs=True).get_result()
+        return {"data":response}
  #Content type must be included in the header
             header = {"content-type": "application/json"}
     #Performs a POST on the specified url 

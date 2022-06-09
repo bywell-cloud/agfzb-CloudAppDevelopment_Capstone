@@ -281,7 +281,8 @@ def add_review(request, dealer_id):
         car_id = request.POST.get('car')
         car = CarModel.objects.get(id=car_id)
         purchase = request.POST.get('purchase_check')
-
+        
+       
         review = {}
         #review['time'] = datetime.utcnow().isoformat().split('T')[0]
         review['dealership'] = dealer_id
@@ -293,44 +294,27 @@ def add_review(request, dealer_id):
         review['car_make'] = car.carmake
 
         if purchase == 'on':
-            review['purchase'] = True
+            review['purchase'] = 'True'
         else:
-            review['purchase'] = False
+            review['purchase'] = 'False'
 
         if request.user and request.user.is_authenticated:
             json_payload = { "review": review }
-        products_doc = {
-        "car_make": "Bmw","car_model": "suden",
-        "car_year": 2000,"dealership": 13,
-        "id":210,"name": "Richardy","purchase": 'true',
-        "purchase_date": "09/17/2020","review": "testing12"
-        }    
-        response = service.post_document(db='reviews', document=products_doc).get_result()
+      #  products_doc = {
+       # "car_make": "Bmw","car_model": "suden",
+        #"car_year": 2000,"dealership": 13,
+      #  "id":210,"name": "Richardy","purchase": 'true',
+       # "purchase_date": "09/17/2020","review": "testing12"
+      #  }    
+        response = service.post_document(db='reviews', document=json_payload).get_result()
         if response:
-        response = service.post_all_docs(db='reviews', include_docs=True).get_result()
-        return {"data":response}
- #Content type must be included in the header
-            header = {"content-type": "application/json"}
-    #Performs a POST on the specified url 
-            response= requests.post(addreview_url,data=json.dumps(json_payload), headers=header, verify=False)
-            rst_json=response.json()
-
-    #parse the json to get the service ticket
-            result = rst_json["response"]["Result"]
-
-            return result 
-            
-           # result, status_code = post_request(addreview_url, json_payload, dealer_id=dealer_id)
-            print(result)
-            if (result.get('message') == "ok"):
-
-                return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
-            else:
-                context=dict()
-                context["error"] = result["message"]
-                return render(request, 'djangoapp/add_review.html', context)
-            
+        #response = service.post_all_docs(db='reviews', include_docs=True).get_result()
+            response = service.post_find(db='reviews',selector={"dealership": {'$eq':int(dealer_id)}},fields=['id','name','dealership','review','purchase','purchase_date','car_make','car_model','car_year']).get_result()
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id ,{"data":reponse})
         else:
-            pass
-            #return redirect("djangoapp:dealer_details", dealer_id)
+            context=dict()
+            context["error"] = result["message"]
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id ,{"data":reponse})
+            
+        
             

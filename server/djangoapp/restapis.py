@@ -7,6 +7,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 import logging
 
+
 url1="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
 
 url="https://edb8d4d7.eu-gb.apigw.appdomain.cloud/api/dealership"
@@ -177,16 +178,9 @@ def get_dealer_reviews(dealer_id , **kwargs):
     results = []
     # Call get_request with a URL parameter
     json_result = get_request(review_url)
-     json_result = get_request(url)
+     
     if json_result:
         r1 = json_result['rows']
-        
-        for rv in r1:
-            reviews = rv['doc']
-            #print('ADDRESS', deal_data["address"])
-            if reviews.get('id'):
-   
-    ##if json_result:
       ##  reviews = json_result["reviews"] 
         # For each review object
        # for review in reviews:
@@ -194,7 +188,7 @@ def get_dealer_reviews(dealer_id , **kwargs):
              #reviews = json_result["body"]["data"]
         # For each review object
         for dealer_data0 in r1:
-            dealer_data = rv['doc']
+            dealer_data = dealer_data0['doc']
             if (dealer_id == dealer_data.get("dealership")):
          
             #if dealer_data.get('id') :

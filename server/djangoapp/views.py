@@ -21,8 +21,8 @@ import json
 import os
 import requests
 import sys
-from ibmcloudant.cloudant_v1 import CloudantV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator , BasicAuthenticator
+#from ibmcloudant.cloudant_v1 import CloudantV1
+#from ibm_cloud_sdk_core.authenticators import IAMAuthenticator , BasicAuthenticator
 from urllib.parse import urlencode as original_urlencode
 from urllib.parse import uses_params
 from django.utils.http import urlencode
@@ -306,9 +306,10 @@ def add_review(request, dealer_id):
             p = 'False'
         cmo = car.car_type
 
-        return redirect('https://079110cb.eu-gb.apigw.appdomain.cloud/eg/eg'+'?'+urlencode({'cnm':carname})+'&'+urlencode({'cy':caryear})+'&'+urlencode({'cm':carmake})+'&'+urlencode({'di':di})+'&'+urlencode({'cn':cn})+'&'+urlencode({'usn':usn})+'&'+urlencode({'pd':pd})+'&'+urlencode({'p':p}+'&'+urlencode({'cmo':cmo}))) 
+        return redirect('https://079110cb.eu-gb.apigw.appdomain.cloud/eg/eg'+'?'+urlencode({'cnm':carname})+'&'+urlencode({'cy':caryear})+'&'+urlencode({'cm':carmake})+'&'+urlencode({'di':di})+'&'+urlencode({'cn':cn})+'&'+urlencode({'usn':usn})+'&'+urlencode({'pd':pd})+'&'+urlencode({'p':p})+'&'+urlencode({'cmo':cmo})) 
 
-        #-review = {}
+
+        #-review = {} 
         #review['time'] = datetime.utcnow().isoformat().split('T')[0]
         #-review['dealership'] = dealer_id
 

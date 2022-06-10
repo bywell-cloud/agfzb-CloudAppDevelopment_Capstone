@@ -54,20 +54,20 @@
     </div>
     {% endif %}
   </div>
-  <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush"><div class="card-columns">
     {% for review in reviews %}
-    <li class="list-group-item">
+    <li class="list-group-item"><div class="card">
       <div class="row">
-        <div class="col-1 d-flex">
-          <span
-            class="material-icons m-auto {% if review.sentiment == 'positive' %} text-success {% elif review.sentiment == 'negative' %} text-danger {% else %} text-warning {% endif %} ">
-            circle
-          </span>
+        <div class="col-1 d-flex"><div class="card-img-left" >
+          
+             {% if review.sentiment == 'positive' %} <img src="{%static '{{MEDIA_URL}}/emoji/positive.png' %}" width=22 hieght=22 >  {% elif review.sentiment == 'negative' %} <img src="{%static '{{MEDIA_URL}}/emoji/negative.png' %}"  width=22 hieght=22 > {% else %} <img src="{%static '{{MEDIA_URL}}/emoji/neutral.png' %}"  width=22 hieght=22 > {% endif %} 
+            
+          </div>
         </div>
-        <div class="col ">
+        <div class="col "><div class="card-body">
           <h5 class="card-title">
             {{ review.car_make }} - {{ review.car_model }} - {{ review.car_year }}
-          </h5>
+          </h5></div>
           <div class="row">
             <div class="col-3">Review date: {{ review.time }} </div>
             <div class="col-3">Car purchased: {{ review.purchase }}
@@ -75,10 +75,10 @@
               - {{review.purchase_date}}
               {% endif %} </div>
           </div>
-          <hr>
-          <p class="card-text m-4">{{ review.review }}</p>
-        </div>
-      </div>
+          <hr><div class="card-body">
+          <p class="card-text m-4">{{ review.review }}</p></div>
+        </div></div></div>
+      
     </li>
     {% endfor %}
   </ul>
@@ -87,7 +87,7 @@
 
         
         
-        
+</div>
 
     </body>
 

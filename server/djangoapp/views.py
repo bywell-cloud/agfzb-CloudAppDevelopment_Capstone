@@ -1,3 +1,4 @@
+
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
@@ -14,18 +15,28 @@ import requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
 import requests
 import sys
 from ibmcloudant.cloudant_v1 import CloudantV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator , BasicAuthenticator
+from urllib.parse import urlencode as original_urlencode
+from urllib.parse import uses_params
+from django.utils.http import urlencode
+
+#from ibm_cloud_sdk_core.authenticators import BasicAuthenticator
+
+#authenticator = BasicAuthenticator('apikey-v2-16u3crmdpkghhxefd
+#from config import CLOUDANT_DB
 
 
-authenticator = IAMAuthenticator("KSJsfNXg4_mYa7TailJYPjAIt4BDHty_egXILz9Vn75M")
-service = CloudantV1(authenticator=authenticator)
-service.set_service_url("https://apikey-v2-15fij93at4ftr36fwwdfuh4po5vcrv58md8rf718308g:7a1405f456fc3a0acca4a0ea939068f7@4ff16b13-4a3a-4608-a787-cbe81ec8dfae-bluemix.cloudantnosqldb.appdomain.cloud")
+
+#auth = BasicAuthenticator("KSJsfNXg4_mYa7TailJYPjAIt4BDHty_egXILz9Vn75M" ,"7a1405f456fc3a0acca4a0ea939068f7")
+#service = CloudantV1(authenticator=auth)
+#service.set_service_url("https://apikey-v2-15fij93at4ftr36fwwdfuh4po5vcrv58md8rf718308g:7a1405f456fc3a0acca4a0ea939068f7@4ff16b13-4a3a-4608-a787-cbe81ec8dfae-bluemix.cloudantnosqldb.appdomain.cloud")
     
 
     
@@ -280,41 +291,58 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         car_id = request.POST.get('car')
         car = CarModel.objects.get(id=car_id)
+        carname=car.name
+        caryear=str(car.year)
+        carmake = car.carmake
+        di = dealer_id
+        cn = request.POST.get('content')
+        usn = request.POST.get('username')
+        pd = str(request.POST.get('purchase_date'))
+
         purchase = request.POST.get('purchase_check')
-        
-       
-        review = {}
-        #review['time'] = datetime.utcnow().isoformat().split('T')[0]
-        review['dealership'] = dealer_id
-        review['review'] = request.POST.get('content')
-        review['name'] = request.POST.get('username')
-        review['purchase_date'] = str(request.POST.get('purchase_date'))
-        review['car_model'] = car.name
-        review['car_year'] = str(car.year)
-        review['car_make'] = car.carmake
-
         if purchase == 'on':
-            review['purchase'] = 'True'
+            p = 'True'
         else:
-            review['purchase'] = 'False'
+            p = 'False'
+        cmo = car.car_type
 
-        if request.user and request.user.is_authenticated:
-            json_payload = { "review": review }
+        return redirect('https://079110cb.eu-gb.apigw.appdomain.cloud/eg/eg'+'?'+urlencode({'cnm':carname})+'&'+urlencode({'cy':caryear})+'&'+urlencode({'cm':carmake})+'&'+urlencode({'di':di})+'&'+urlencode({'cn':cn})+'&'+urlencode({'usn':usn})+'&'+urlencode({'pd':pd})+'&'+urlencode({'p':p}+'&'+urlencode({'cmo':cmo}))) 
+
+        #-review = {}
+        #review['time'] = datetime.utcnow().isoformat().split('T')[0]
+        #-review['dealership'] = dealer_id
+
+    
+        #-review['review'] = request.POST.get('content')
+        #-review['name'] = request.POST.get('username')
+        #-review['purchase_date'] = str(request.POST.get('purchase_date'))
+        #-review['car_model'] = car.name
+        #-review['car_year'] = str(car.year)
+        #review['car_make'] = car.carmake
+
+    #-    if purchase == 'on':
+      #-      review['purchase'] = 'True'
+        #-else:
+          #-  review['purchase'] = 'False'
+
+   #-     if request.user and request.user.is_authenticated:
+     #-       json_payload = { "review": review }
       #  products_doc = {
        # "car_make": "Bmw","car_model": "suden",
         #"car_year": 2000,"dealership": 13,
       #  "id":210,"name": "Richardy","purchase": 'true',
        # "purchase_date": "09/17/2020","review": "testing12"
       #  }    
-        response = service.post_document(db='reviews', document=json_payload).get_result()
-        if response:
-        #response = service.post_all_docs(db='reviews', include_docs=True).get_result()
-            response = service.post_find(db='reviews',selector={"dealership": {'$eq':int(dealer_id)}},fields=['id','name','dealership','review','purchase','purchase_date','car_make','car_model','car_year']).get_result()
-            return redirect("djangoapp:dealer_details", dealer_id=dealer_id ,{"data":reponse})
-        else:
-            context=dict()
-            context["error"] = result["message"]
-            return redirect("djangoapp:dealer_details", dealer_id=dealer_id ,{"data":reponse})
-            
         
+        pass
+        
+        
+        #-response = service.post_document(db='reviews', document=json_payload).get_result()
+        #-if response:
+        #response = service.post_all_docs(db='reviews', include_docs=True).get_result()
+          #-  response = service.post_find(db='reviews',selector={"dealership": {'$eq':int(dealer_id)}},fields=['id','name','dealership','review','purchase','purchase_date','car_make','car_model','car_year']).get_result()
+           #- return redirect("djangoapp:dealer_details" ,{"data":response ,"dealer_id":dealer_id })
+        #-else:
             
+          #-  return redirect("djangoapp:dealer_details" ,{"data":response ,"dealer_id":dealer_id , "error":"Sorry Someting when wrong , Not saved" })
+     
